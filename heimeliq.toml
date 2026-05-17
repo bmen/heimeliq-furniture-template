@@ -1,71 +1,105 @@
 # heimeliQ-Erweiterungen
 # Diese Datei ergänzt das OKH-Manifest um heimeliQ-spezifische Felder, die
-# der allgemeine OKH-Standard nicht abbildet (Reihen-Zugehörigkeit, externe
-# Drittteile, Versionsbezüge etc.).
+# der allgemeine OKH-Standard nicht abbildet (Reihen-Zugehörigkeit, Wald-
+# Namensgeber, externe Drittteile, Versionsbezüge etc.).
 #
 # Gegen heimeliq.schema.json validierbar.
+#
+# WICHTIG zur TOML-Reihenfolge:
+# Alle Top-Level-Felder MÜSSEN vor dem ersten Section-Header stehen.
+
+# ============================================================================
+# TOP-LEVEL-FELDER
+# ============================================================================
 
 "$schema" = "./heimeliq.schema.json"
 
 # Version dieser Vorlage, auf der das Möbel-Repo basiert.
 # Wird bei jedem Template-Upgrade aktualisiert (siehe MIGRATIONS.md).
-heimeliq-template-version = "0.1.1"
+heimeliq-template-version = "0.2.0"
 
 # Version dieses Möbels (SemVer).
 # Erhöhen bei: PATCH = Doku-Fixes, MINOR = neue Optionen, MAJOR = Konstruktionsänderung.
-version = "0.1.1"
+version = "0.1.0"
 
-# Slug für URLs auf der Website. Sollte mit dem Repo-Namen übereinstimmen
-# (ohne das "heimeliq-"-Präfix).
-slug = "FIXME-reihe-typ-nr"          # z. B. "massiq-sideboard-001"
+# Slug für URLs auf der Website. Identisch mit dem Repo-Namen ohne "heimeliq-"
+# Präfix. Schema: <reihe>-<waldname>.
+slug = "FIXME-reihe-waldname"          # z. B. "massiq-hambach"
 
 # Reihe, zu der dieses Möbel gehört. Pflicht.
 # Erlaubte Werte: "massiq", "workaholiq", "keiliq".
 series = "FIXME"
 
-# Möbel-Typ (frei, aber konsistent halten).
-type = "FIXME"                        # z. B. "sideboard", "werkbank", "werkzeughalter"
+# Möbel-Typ als Metadatenfeld für Filter/Suche. KEIN Teil der ID.
+type = "FIXME"                         # z. B. "sideboard", "werkbank", "werkzeughalter"
+
+# Weitere Schlagworte für Filter und Suche. Optional.
+tags = []                              # z. B. ["wohnzimmer", "stauraum", "massiv"]
 
 # Status: "draft" | "published" | "archived"
 status = "draft"
 
-# ===========================================================================
+# ============================================================================
+# SECTIONS
+# ============================================================================
+
+# --- Wald-Namensgeber ---
+# Jedes Möbel trägt den Namen eines real existierenden Waldes.
+# Der Waldname ist möbel-eindeutig: kein zweites heimeliQ-Möbel darf
+# denselben Wald tragen. Die forest.id entspricht dem letzten Segment
+# des Repo-Namens und des Slugs.
+
+[forest]
+id = "FIXME-waldname"                  # z. B. "hambach", "bialowieza", "tongass"
+name = "FIXME Vollständiger Name"      # z. B. "Hambacher Forst"
+region = "FIXME"                       # z. B. "Nordrhein-Westfalen"
+country = "FIXME"                      # ISO-3166-1-alpha-2, z. B. "DE", "PL", "US"
+forest_type = "FIXME"                  # z. B. "Mischwald", "Urwald", "Regenwald"
+age_estimate_years = 0                 # FIXME, optional
+status = "FIXME"                       # protected | partially-protected | endangered |
+                                       # critically-endangered | stable | unknown
+themes = ["FIXME"]                     # Stichworte, z. B. ["braunkohle", "biodiversität"]
+note = """
+FIXME: Optionaler Satz, warum genau dieser Wald für genau dieses Möbel?
+"""
+
+# Weiterführende Links zu Schutzorganisationen, Wikipedia etc.
+[[forest.links]]
+label = "FIXME Link-Beschriftung"
+url = "https://FIXME.example.org"
+
+# ============================================================================
 # Externe Bauteile (Standard- und Drittteile, nicht open source)
-# ===========================================================================
+# ============================================================================
 # Schrauben, Beschläge, Scharniere etc. Diese stehen NICHT im OKH-`part`-Array,
 # weil sie keine eigene Open-Hardware-Doku haben.
 # IDs: E001, E002, ... (möbel-lokal eindeutig)
 
 [[external_parts]]
 heimeliq-part-id = "E001"
-name = "FIXME Bezeichnung"            # z. B. "Senkkopfschraube"
-standard = "FIXME"                    # z. B. "DIN 7991", "ISO 10642"
-material = "FIXME"                    # z. B. "Edelstahl A2"
-dimensions = "FIXME"                  # z. B. "M6x40"
+name = "FIXME Bezeichnung"             # z. B. "Senkkopfschraube"
+standard = "FIXME"                     # z. B. "DIN 7991", "ISO 10642"
+material = "FIXME"                     # z. B. "Edelstahl A2"
+dimensions = "FIXME"                   # z. B. "M6x40"
 quantity = 0
 
-# Optional: Bezugsquellen (rein informativ, keine Verkaufslogik)
-# suppliers = ["lokal", "wuerth.de"]
-
-# ===========================================================================
+# ============================================================================
 # Empfohlene Holzarten (für Konstruktion bekannt geeignet)
-# ===========================================================================
-# Nur die Holzarten, in denen das Möbel konstruktiv funktioniert.
-# Preisliche Bewertung passiert im Shop, NICHT hier.
+# ============================================================================
 
 [[wood_options]]
-species = "FIXME"                     # z. B. "Eberesche"
+species = "FIXME"                      # z. B. "Eberesche"
 origin = "regional"
 recommended = true
 
-# ===========================================================================
+# ============================================================================
 # Pflege & Nachhaltigkeit (informativ)
-# ===========================================================================
+# ============================================================================
 
 [care]
-surface_treatment = "FIXME"           # z. B. "Hartwachs-Öl"
+surface_treatment = "FIXME"            # z. B. "Hartwachs-Öl"
 recommended_products = []
 
 [sustainability]
-wood_source = "FIXME"                 # z. B. "regional, Bayerischer Wald"
+wood_source = "FIXME"                  # z. B. "regional, Bayerischer Wald"
 co2_documented = false

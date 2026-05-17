@@ -11,7 +11,8 @@
     "slug",
     "series",
     "type",
-    "status"
+    "status",
+    "forest"
   ],
   "properties": {
     "heimeliq-template-version": {
@@ -25,9 +26,9 @@
       "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
     },
     "slug": {
-      "description": "URL-Slug. Sollte zum Repo-Namen passen (ohne 'heimeliq-' Präfix).",
+      "description": "URL-Slug, identisch mit dem Repo-Namen ohne 'heimeliq-' Präfix. Schema: <reihe>-<waldname>.",
       "type": "string",
-      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+      "pattern": "^(massiq|workaholiq|keiliq)-[a-z0-9]+(-[a-z0-9]+)*$"
     },
     "series": {
       "description": "Reihe, zu der dieses Möbel gehört.",
@@ -35,14 +36,84 @@
       "enum": ["massiq", "workaholiq", "keiliq"]
     },
     "type": {
-      "description": "Möbel-Typ als Kurzbezeichner (z. B. 'sideboard', 'werkbank').",
+      "description": "Möbel-Typ als Metadatenfeld für Filter/Suche. Kein Teil der ID. Beispiele: 'sideboard', 'werkbank', 'werkzeughalter'.",
       "type": "string",
       "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "tags": {
+      "description": "Weitere Schlagworte für Filter und Suche.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9-]*$"
+      },
+      "uniqueItems": true
     },
     "status": {
       "description": "Veröffentlichungsstatus.",
       "type": "string",
       "enum": ["draft", "published", "archived"]
+    },
+    "forest": {
+      "description": "Wald-Namensgeber dieses Möbels. Jedes Möbel trägt den Namen eines real existierenden Waldes; der Waldname ist möbel-eindeutig.",
+      "type": "object",
+      "required": ["id", "name", "region", "country"],
+      "properties": {
+        "id": {
+          "description": "URL-taugliche Kurzform des Waldnamens, identisch mit dem letzten Segment des Repo-Namens.",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "name": {
+          "description": "Vollständiger Name des Waldes (mit Umlauten/Sonderzeichen, menschenlesbar).",
+          "type": "string",
+          "minLength": 2
+        },
+        "region": {
+          "description": "Region innerhalb des Landes.",
+          "type": "string"
+        },
+        "country": {
+          "description": "Land im ISO-3166-1-alpha-2-Format.",
+          "type": "string",
+          "pattern": "^[A-Z]{2}$"
+        },
+        "forest_type": {
+          "description": "Wald-Typus (z. B. Mischwald, Nadelwald, Regenwald, Urwald).",
+          "type": "string"
+        },
+        "age_estimate_years": {
+          "description": "Grobe Altersangabe des Waldes (Jahre).",
+          "type": "integer",
+          "minimum": 0
+        },
+        "status": {
+          "description": "Schutz-/Bedrohungsstatus.",
+          "type": "string",
+          "enum": ["protected", "partially-protected", "endangered", "critically-endangered", "stable", "unknown"]
+        },
+        "themes": {
+          "description": "Stichworte zur Geschichte/Bedeutung (z. B. 'braunkohle', 'biodiversität', 'klimaschutz').",
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "links": {
+          "description": "Weiterführende Links, z. B. zu Schutzorganisationen oder Wikipedia.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "url"],
+            "properties": {
+              "label": { "type": "string" },
+              "url": { "type": "string", "format": "uri" }
+            }
+          }
+        },
+        "note": {
+          "description": "Optionaler Satz, warum genau dieser Wald für genau dieses Möbel.",
+          "type": "string"
+        }
+      }
     },
     "external_parts": {
       "description": "Externe Drittteile (nicht open source).",

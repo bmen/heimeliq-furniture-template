@@ -18,6 +18,20 @@ Vollständige Hintergrundgeschichte und Materialherkunft: siehe [docs/de/story.m
 
 ---
 
+## Wald-Namensgeber
+
+Dieses Möbel trägt den Namen **FIXME Vollständiger Waldname** – FIXME Region, FIXME Land.
+
+FIXME 2–4 Sätze über den Wald: Geschichte, Besonderheiten, aktueller Zustand. Bei bedrohten Wäldern: Hinweis auf Schutzbemühungen und ggf. Organisationen, die sich für den Erhalt einsetzen.
+
+Weiterführende Links:
+
+- [FIXME Wikipedia / Schutzorganisation](https://FIXME.example.org)
+
+Maschinenlesbar in [heimeliq.toml](heimeliq.toml) unter `[forest]`.
+
+---
+
 ## Gesamtmaße
 
 | Eigenschaft | Maß |

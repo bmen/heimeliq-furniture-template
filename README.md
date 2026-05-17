@@ -8,7 +8,7 @@ Jedes Möbel von heimeliQ lebt in einem eigenen Git-Repository. Diese Vorlage de
 
 | Komponente | Version |
 | --- | --- |
-| heimeliQ Template | `0.1.1` |
+| heimeliQ Template | `0.2.0` |
 | OKH-Manifest | `2.4` |
 | Lizenz dieses Templates | `MIT` |
 | Lizenz daraus erzeugter Möbel-Repos | `CERN-OHL-S-2.0` |
@@ -46,7 +46,7 @@ Jedes Möbel gehört zu genau einer Reihe.
 ## Ein neues Möbel-Repo aus dieser Vorlage erzeugen
 
 1. Auf GitHub den Knopf **„Use this template"** → **„Create a new repository"** klicken.
-2. Repo-Name nach Schema: `heimeliq-<reihe>-<typ>-<nr>`, zum Beispiel `heimeliq-massiq-sideboard-001`.
+2. Repo-Name nach Schema: `heimeliq-<reihe>-<waldname>`, zum Beispiel `heimeliq-massiq-hambach`.
 3. Repo lokal klonen.
 4. **Lizenz umstellen**: `LICENSE` löschen, `LICENSE.example` zu `LICENSE` umbenennen.
 5. **README umstellen**: `README.md` löschen, `README.example.md` zu `README.md` umbenennen.
@@ -116,12 +116,27 @@ Faustregel: **Außenwirkungs-Bilder zentral in `media/`, Doku-Bilder lokal neben
 
 | Ebene | Schema | Beispiel |
 | --- | --- | --- |
-| Möbel-Repo | `heimeliq-<reihe>-<typ>-<nr>` | `heimeliq-massiq-sideboard-001` |
+| Möbel-Repo | `heimeliq-<reihe>-<waldname>` | `heimeliq-massiq-hambach` |
 | Eigenes Bauteil (Self) | `S###` | `S001` (möbel-lokal) |
 | Externes Bauteil | `E###` | `E001` (möbel-lokal) |
 | Möbel-Version | SemVer | `1.2.0` |
 
 Bauteil-IDs sind innerhalb des jeweiligen Möbel-Repos eindeutig. Außerhalb adressiert man sie als `<repo>/<part-id>`.
+
+Der Möbel-Typ (z. B. `sideboard`, `werkbank`) ist **kein** Teil der ID, sondern ein Metadatenfeld (`type`) in `heimeliq.toml`. Gleiches gilt für zusätzliche `tags`. Damit bleibt die ID schlank und die Klassifizierung filterbar.
+
+## Wald-Konzept
+
+Jedes heimeliQ-Möbel trägt den Namen eines real existierenden Waldes. Der Waldname ist **möbel-eindeutig**: kein zweites Möbel trägt denselben Wald. Damit wird die Marke um eine inhaltliche Schicht erweitert – jedes Möbel verweist auf einen Ort, hat eine kleine Geschichte, und bei bedrohten Wäldern macht heimeliQ deren Situation sichtbar.
+
+Wald-Metadaten leben in der `[forest]`-Section der `heimeliq.toml`. Der Wald-Bereich auf der Produktseite wird beim Build daraus generiert. Es gibt **kein** separates Forest-Repository.
+
+Beispiele für Waldnamen:
+- Deutschland/DACH: `hambach`, `hainich`, `spessart`, `bayerischer-wald`, `pfaelzerwald`
+- Europa: `bialowieza`, `sherwood`, `broceliande`
+- Welt: `tongass`, `daintree`, `yakushima`, `atewa`
+
+Die `id` im `[forest]`-Block muss URL-tauglich sein (lowercase, keine Umlaute) und mit dem letzten Segment des Repo-Namens übereinstimmen.
 
 ## Mitwirken
 
